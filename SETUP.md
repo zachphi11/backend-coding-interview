@@ -1,14 +1,9 @@
 # Setup Instructions
 
 ## Prerequisites
-
 - Docker
-- Git
 
-## Docker Setup (Recommended and Easiest)
-
-This is the easiest way to get started.
-
+## Docker Launch
 ### 1. Create environment file
 ```bash
 cp .env.example .env
@@ -27,7 +22,7 @@ The application will:
 
 ### 3. Access the API
 - API: http://localhost:8000
-- Interactive Docs: http://localhost:8000/api/docs
+- Swagger Docs: http://localhost:8000/api/docs
 - Health Check: http://localhost:8000/health
 
 ### 4. Default Admin Credentials
@@ -42,6 +37,7 @@ Password: admin123
 ### With Docker
 
 #### If API is already running
+In a separate terminal:
 ```bash
 docker-compose exec api pytest
 ```

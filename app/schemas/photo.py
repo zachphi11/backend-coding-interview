@@ -30,10 +30,24 @@ class PhotoCreate(PhotoBase):
 
 
 class PhotoUpdate(BaseModel):
-    """Schema for updating a photo."""
+    """Schema for updating a photo (all fields optional for partial updates)."""
 
-    alt: Optional[str] = None
+    width: Optional[int] = Field(None, gt=0)
+    height: Optional[int] = Field(None, gt=0)
+    url: Optional[str] = None
     photographer: Optional[str] = None
+    photographer_url: Optional[str] = None
+    photographer_id: Optional[int] = None
+    avg_color: Optional[str] = None
+    alt: Optional[str] = None
+    src_original: Optional[str] = None
+    src_large2x: Optional[str] = None
+    src_large: Optional[str] = None
+    src_medium: Optional[str] = None
+    src_small: Optional[str] = None
+    src_portrait: Optional[str] = None
+    src_landscape: Optional[str] = None
+    src_tiny: Optional[str] = None
 
 
 class PhotoResponse(PhotoCreate):

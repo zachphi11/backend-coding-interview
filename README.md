@@ -1,67 +1,185 @@
-# Clever's Backend Engineering Challenge
-👋 Hello!, Hola!, Witam!
-
-Thank you for taking the time to interview with Clever. This coding challenge is designed to see how you approach backend architecture, API design, and engineering best practices. We don't want this to take too much of your time (and if it does, certainly let us know!).
+# Photo Management API - Project Documentation
 
 ## Overview
-Build a RESTful API for a photo management service using the provided photo dataset. This API should be production-ready, well-documented, and demonstrate your understanding of backend architecture, API design, and software engineering best practices.
 
-## Core Requirements
-The baseline functionality we expect:
-- Ingest and store the provided photo data (photos.csv)
-- Implement user authentication and authorization
-- Provide API endpoints for managing and accessing photos
-- Include comprehensive API documentation
-- Write tests for your implementation
+A production-ready RESTful API for managing photo data from Pexels, built with FastAPI and PostgreSQL. This project demonstrates best practices in API design, authentication, testing, and deployment.
 
-## What We Want to See
-This is intentionally open-ended. We want to see what **you** think makes a great, production-ready API. Consider implementing features and patterns you'd expect in a real-world system. Choose what you think is most important and implement thoughtfully. Quality over quantity.
+## Table of Contents
 
-## Technology Choices
-- **Backend Framework**: We primarily use Django and Ruby on Rails, but you're welcome to use whatever language and framework you're most proficient in (Python, Ruby, Node.js, Go, Java, etc.)
-- **Database**: Your choice - pick what makes sense for the use case
-- **Documentation**: Choose the format that best communicates your API design
-- **Additional Tools**: Use whatever tools and libraries you believe are appropriate
+- [Quick Start](#quick-start)
+- [Architecture Decisions](#architecture-decisions)
+- [Features Implemented](#features-implemented)
+- [What I Would Add With More Time](#what-i-would-add-with-more-time)
+- [Assumptions Made](#assumptions-made)
 
-## Data Source
-We've provided `photos.csv` with photo data from Pexels. Each row represents a photo with details like dimensions, photographer information, various image sizes, and descriptions. Use this as your data source.
+## Quick Start
 
-## Deliverables
-Your submission should include:
+### Using Docker (Recommended)
+```bash
+docker-compose up --build
+```
 
-1. **Working API** with clear setup instructions
-2. **API Documentation** explaining available endpoints and how to use them
-3. **Tests** demonstrating your testing approach
-4. **README** that explains:
-   - Architecture decisions and trade-offs you made
-   - What features you implemented and why you prioritized them
-   - How to run the application and tests
-   - What you would add/change with more time
-   - Any assumptions you made
+Visit http://localhost:8000/api/docs for interactive API documentation.
 
-## Evaluation Criteria
-We'll be assessing:
-- **API Design**: RESTful principles, resource modeling, endpoint design, consistency
-- **Code Quality**: Organization, patterns, maintainability, readability
-- **Database Design**: Schema design, relationships, indexing strategy
-- **Security**: Authentication implementation, authorization, input validation
-- **Error Handling**: Meaningful error messages, proper HTTP status codes, edge cases
-- **Testing**: Test coverage, test quality, testing strategy
-- **Documentation**: API docs, code documentation, setup instructions, decision rationale
+**Default Admin Credentials:**
+- Username: `admin`
+- Password: `admin123`
 
-## Time Expectation
-We expect this to take **2-6 hours** of focused work. If you find yourself spending significantly more time, please document what you would do next rather than trying to complete everything. We value your time and want to see how you prioritize.
+For detailed setup instructions, see [SETUP.md](SETUP.md).
 
-## Submission
-- Fork this repo and commit your code there
-- Open a PR from your fork back to the main repo
-- Add the following users as reviewers so we can assess your work:
-  - James Crain (@imjamescrain)
-  - Jimmy Lien (@jlien)
-  - Nick Clucas (@nickcluc)
-  - Ryan McCue (@rymccue)
+## Architecture Decisions
 
-## Final Thoughts
-This challenge is designed to be open-ended because we want to understand how you think about building systems, not just whether you can follow a specification. Show us your engineering judgment, your decision-making process, and what you believe "done" really means.
+### 1. Framework Choice: FastAPI
 
-**Any questions?** Send emails to <a href="mailto:ryan@movewithclever.com">ryan@movewithclever.com</a>. Good luck!
+**Why FastAPI?**
+- **Familiarity**: It's the framework I'm most comfortable with at the moment
+- **Performance**: One of the fastest Python frameworks
+- **Auto Documentation**: Automatic OpenAPI/Swagger documentation generation
+- **Type Safety**: Built-in Pydantic validation reduces bugs
+- **Async Support**: Native async/await support for high concurrency
+
+**Trade-offs:**
+- Smaller ecosystem compared to Django
+- Less built-in features, but that makes it lightweight
+- Requires more manual configuration for complex use cases
+
+### 2. Database: PostgreSQL
+
+**Why PostgreSQL?**
+- **Production Ready**: Industry standard for production applications
+- **ACID Compliance**: Guarantees data integrity
+- **Advanced Features**: Full-text search, JSON support, robust indexing
+- **Scalability**: Handles millions of records efficiently
+- **Free & Open Source**: No licensing costs
+
+**Schema Design Decisions:**
+- **Denormalized photographer data**: Small dataset so it felt unnecessary to normalize the data. Kept photographer info in photos table for faster reads.
+- **Composite indexes**: Created indexes on common query patterns (photographer + created_at, photo dimensions)
+- **Separate users table**: Proper authentication requires isolated user management
+
+### 3. Authentication: JWT (JSON Web Tokens)
+
+**Why JWT?**
+- **Stateless**: No server-side session storage required
+- **Scalable**: Easy to scale horizontally
+- **Standard**: Industry-standard approach
+
+**Implementation Details:**
+- Access tokens: 30-minute expiration for security
+- Refresh tokens: 7-day expiration for user experience
+- Bearer token authentication
+- Password hashing with bcrypt
+
+**Trade-offs:**
+- Cannot revoke tokens before expiration (mitigated with short expiration)
+- Requires secure secret key management
+
+### 4. Project Structure: Layered Architecture
+
+```
+app/
+|-- api/          # API endpoints 
+|-- ore/          # Core functionality (config, security, dependencies)
+|-- db/           # Database configuration
+|-- models/       # SQLAlchemy models
+|-- schemas/      # Pydantic schemas (API model validation)
+|-- services/     # Business logic layer
+```
+
+**Benefits:**
+- **Separation of Concerns**: Each layer has a clear responsibility
+- **Testability**: Easy to mock and test individual layers
+- **Maintainability**: Changes are localized to specific layers
+- **Scalability**: Easy to add new features without affecting existing code
+
+
+## Features Implemented
+
+**Feature Implementation reasoning:**  
+When choosing what features to implement, I firstly focused on the core functionality and must-haves of the application: data ingestion, database design, authentication, basic api endpoints for photos, testing, and usability. After that I focused on nice to haves like filtering on the photos and admin versus user actions.
+
+### Features:
+
+1. **Data Ingestion**
+   - CSV parsing with error handling
+   - Batch processing (100 records at a time)
+   - Duplicate detection
+   - Automatic admin user creation
+
+2. **Authentication & Authorization**
+   - User registration with validation
+   - Login with JWT tokens
+   - Token refresh mechanism
+   - Role-based access control (Admin vs User)
+   - Protected endpoints
+
+3. **Photo Management API**
+   - List photos with pagination
+   - Get photo by ID
+   - Filter by photographer, dimensions, search term
+   - Create/Update/Delete (admin only)
+   - Get photos by photographer
+
+4. **API Documentation**
+   - Auto-generated Swagger docs
+   - Detailed API documentation in [API_DOCUMENTATION.md](API_DOCUMENTATION.md)
+
+5. **Testing**
+   - Unit tests for all endpoints
+   - Authentication tests
+   - Authorization tests
+   - Filter and pagination tests
+   - Test coverage reporting
+
+
+## What I Would Add With More Time
+
+1. **TDD or BDD approach**
+   - Chose to implement first and then write tests for speed
+   - Implement Red - Green - Refactor for TDD
+   - Alternatively use pytest-bdd framework
+
+2. **Database Migrations**
+   - Alembic for schema versioning
+   - Migration scripts
+   - Rollback capability
+
+3. **Logging**
+   - Structured logging
+   - Request/response logging
+   - Error tracking
+
+4. **API Versioning**
+    - `/api/v1/` prefix
+    - Backward compatibility
+    - Deprecation strategy
+
+## Assumptions Made
+
+1. **Read-Heavy Workload**
+   - Assumption: More reads than writes
+
+2. **Public Photo Data**
+   - Assumption: All authenticated users can view all photos
+
+3. **Admin Priveleges**
+   - Assumption: only admins will be able to add, update, or delete from the database
+
+4. **CSV Data is Clean**
+   - Assumption: photos.csv has valid data
+
+5. **Photo IDs are Unique**
+   - Assumption: Pexels IDs are unique
+
+## Technology Stack
+
+- **Framework**: FastAPI 0.109.0
+- **Language**: Python 3.11+
+- **Database**: PostgreSQL 15
+- **ORM**: SQLAlchemy 2.0
+- **Authentication**: JWT (python-jose)
+- **Password Hashing**: bcrypt
+- **Testing**: pytest
+- **Containerization**: Docker & Docker Compose
+- **Web Server**: Uvicorn
+

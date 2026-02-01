@@ -4,6 +4,10 @@
 ```
 http://localhost:8000
 ```
+## Swagger Documentation
+```
+http://localhost:8000/api/docs
+```
 
 ## Authentication
 
@@ -13,6 +17,9 @@ Include the token in the Authorization header:
 ```
 Authorization: Bearer <your_access_token>
 ```
+**Options for getting a bearer token:**
+1. Login with the default admin credentials and use provided bearer token
+2. Register a new user, login, and then use the provided bearer token.
 
 ## Endpoints
 

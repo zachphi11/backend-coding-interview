@@ -170,6 +170,29 @@ def test_update_photo_as_admin(client, test_photo, admin_headers):
     assert data["alt"] == "Updated alt text"
 
 
+def test_update_multiple_photo_fields_as_admin(client, test_photo, admin_headers):
+    """Test updating multiple photo fields as admin."""
+    update_data = {
+        "alt": "Updated description",
+        "photographer": "Updated Photographer",
+        "width": 3840,
+        "height": 2160,
+        "avg_color": "#000000",
+    }
+    response = client.patch(
+        f"/photos/{test_photo.id}",
+        json=update_data,
+        headers=admin_headers,
+    )
+    assert response.status_code == status.HTTP_200_OK
+    data = response.json()
+    assert data["alt"] == "Updated description"
+    assert data["photographer"] == "Updated Photographer"
+    assert data["width"] == 3840
+    assert data["height"] == 2160
+    assert data["avg_color"] == "#000000"
+
+
 def test_delete_photo_as_admin(client, test_photo, admin_headers):
     """Test deleting a photo as admin."""
     response = client.delete(f"/photos/{test_photo.id}", headers=admin_headers)
