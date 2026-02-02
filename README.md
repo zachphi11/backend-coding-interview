@@ -1,9 +1,5 @@
 # Photo Management API - Project Documentation
 
-## Overview
-
-A production-ready RESTful API for managing photo data from Pexels, built with FastAPI and PostgreSQL. This project demonstrates best practices in API design, authentication, testing, and deployment.
-
 ## Table of Contents
 
 - [Quick Start](#quick-start)
@@ -177,7 +173,7 @@ When choosing what features to implement, I firstly focused on the core function
 - **Language**: Python 3.11+
 - **Database**: PostgreSQL 15
 - **ORM**: SQLAlchemy 2.0
-- **Authentication**: JWT (python-jose)
+- **Authentication**: JWT (python-jose)us
 - **Password Hashing**: bcrypt
 - **Testing**: pytest
 - **Containerization**: Docker & Docker Compose
