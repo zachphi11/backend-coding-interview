@@ -188,15 +188,31 @@ POST /photos/
 PATCH /photos/{photo_id}
 ```
 
-**Request Body:**
+**Request Body (all fields optional for partial updates):**
 ```json
 {
-  "alt": "Updated description",
-  "photographer": "Updated Name"
+  "width": 2560,
+  "height": 1440,
+  "url": "https://www.pexels.com/photo/...",
+  "photographer": "Updated Name",
+  "photographer_url": "https://www.pexels.com/@updated-name",
+  "photographer_id": 456,
+  "avg_color": "#000000",
+  "src_original": "https://images.pexels.com/.../original.jpg",
+  "src_large2x": "https://images.pexels.com/.../large2x.jpg",
+  "src_large": "https://images.pexels.com/.../large.jpg",
+  "src_medium": "https://images.pexels.com/.../medium.jpg",
+  "src_small": "https://images.pexels.com/.../small.jpg",
+  "src_portrait": "https://images.pexels.com/.../portrait.jpg",
+  "src_landscape": "https://images.pexels.com/.../landscape.jpg",
+  "src_tiny": "https://images.pexels.com/.../tiny.jpg",
+  "alt": "Updated description"
 }
 ```
 
-**Response:** `200 OK`
+**Note:** All fields are optional. You can update any combination of fields in a single request.
+
+**Response:** `200 OK` (Returns the updated photo object)
 
 #### Delete Photo (Admin Only)
 ```http

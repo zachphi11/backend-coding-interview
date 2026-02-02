@@ -108,9 +108,24 @@ def update_photo(
     """
     Update a photo (Admin only).
 
+    All fields are optional for partial updates:
     - **photo_id**: Photo ID
-    - **alt**: New alt text (optional)
-    - **photographer**: New photographer name (optional)
+    - **width**: Photo width in pixels (optional)
+    - **height**: Photo height in pixels (optional)
+    - **url**: Photo page URL (optional)
+    - **photographer**: Photographer name (optional)
+    - **photographer_url**: Photographer profile URL (optional)
+    - **photographer_id**: Photographer ID (optional)
+    - **avg_color**: Average color hex code (optional)
+    - **alt**: Alt text description (optional)
+    - **src_original**: Original image URL (optional)
+    - **src_large2x**: Large 2x image URL (optional)
+    - **src_large**: Large image URL (optional)
+    - **src_medium**: Medium image URL (optional)
+    - **src_small**: Small image URL (optional)
+    - **src_portrait**: Portrait image URL (optional)
+    - **src_landscape**: Landscape image URL (optional)
+    - **src_tiny**: Tiny image URL (optional)
 
     Requires admin authentication.
     """
