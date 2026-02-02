@@ -30,7 +30,7 @@ The application will:
 Username: admin
 Password: admin123
 ```
-**Credentials to be changed in production**
+**Credentials to be changed and stored in Secrets Manager in production**
 
 ## Running Tests
 

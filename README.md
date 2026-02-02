@@ -17,7 +17,7 @@ docker-compose up --build
 
 Visit http://localhost:8000/api/docs for interactive API documentation.
 
-**Default Admin Credentials:**
+**Default Admin Credentials (Should be stored in Secrets Manager in Production):**
 - Username: `admin`
 - Password: `admin123`
 
@@ -75,7 +75,7 @@ For detailed setup instructions, see [SETUP.md](SETUP.md).
 ```
 app/
 |-- api/          # API endpoints 
-|-- ore/          # Core functionality (config, security, dependencies)
+|-- core/         # Core functionality (config, security, dependencies)
 |-- db/           # Database configuration
 |-- models/       # SQLAlchemy models
 |-- schemas/      # Pydantic schemas (API model validation)
@@ -152,20 +152,15 @@ When choosing what features to implement, I firstly focused on the core function
 
 ## Assumptions Made
 
-1. **Read-Heavy Workload**
-   - Assumption: More reads than writes
+1. **Read-Heavy Workload** -  More reads than writes
 
-2. **Public Photo Data**
-   - Assumption: All authenticated users can view all photos
+2. **Public Photo Data** - All authenticated users can view all photos
 
-3. **Admin Priveleges**
-   - Assumption: only admins will be able to add, update, or delete from the database
+3. **Admin Priveleges** - Only admins will be able to add, update, or delete from the database
 
-4. **CSV Data is Clean**
-   - Assumption: photos.csv has valid data
+4. **CSV Data is Clean** - photos.csv has valid data
 
-5. **Photo IDs are Unique**
-   - Assumption: Pexels IDs are unique
+5. **Photo IDs are Unique** - Pexels IDs are unique
 
 ## Technology Stack
 
