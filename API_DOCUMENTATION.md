@@ -311,8 +311,3 @@ GET /health/db
 
 The API implements rate limiting of 60 requests per minute per user (configurable).
 
-## Interactive Documentation
-
-FastAPI provides interactive API documentation:
-- **Swagger UI**: http://localhost:8000/api/docs
-- **ReDoc**: http://localhost:8000/api/redoc
